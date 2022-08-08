@@ -113,12 +113,60 @@ exports.getAllReservations = getAllReservations;
  * @return {Promise<[{}]>}  A promise to the properties.
  */
 const getAllProperties = (options, limit = 10) => {
+  const queryParams = [];
+  const queryStringWhereClauses = [` WHERE`, '\n  AND'];
+
+  let queryString = `
+  SELECT properties.*, avg(property_reviews.rating) as average_rating
+  FROM properties
+  LEFT JOIN property_reviews ON properties.id = property_id`;
+
+  if (options.city) {
+    queryParams.push(`%${options.city}%`);
+    queryString += `\n ${queryStringWhereClauses[0]} city LIKE $${queryParams.indexOf(`%${options.city}%`) + 1}`;
+  }
+
+  if (options.owner_id) {
+    queryParams.length === 0
+      ? (queryString += queryStringWhereClauses[0])
+      : (queryString += queryStringWhereClauses[1]);
+    queryParams.push(`%${options.owner_id}%`);
+    queryString += ` owner_id = $${queryParams.indexOf(`%${options.owner_id}%`) + 1}`;
+  }
+
+  if (options.minimum_price_per_night) {
+    queryParams.length === 0
+      ? (queryString += queryStringWhereClauses[0])
+      : (queryString += queryStringWhereClauses[1]);
+    queryParams.push(`${options.minimum_price_per_night}`);
+    queryString += ` cost_per_night >= $${queryParams.indexOf(`${options.minimum_price_per_night}`) + 1}`;
+  }
+
+  if (options.maximum_price_per_night) {
+    queryParams.length === 0
+      ? (queryString += queryStringWhereClauses[0])
+      : (queryString += queryStringWhereClauses[1]);
+    queryParams.push(`${options.maximum_price_per_night}`);
+    queryString += ` cost_per_night <= $${queryParams.indexOf(`${options.maximum_price_per_night}`) + 1}`;
+  }
+
+  queryString += `\n  GROUP BY properties.id`;
+
+  if (options.minimum_rating) {
+    queryParams.push(`${options.minimum_rating}`);
+    queryString += `\n  HAVING avg(property_reviews.rating) >= $${queryParams.indexOf(`${options.minimum_rating}`) + 1}`;
+  }
+
+  queryParams.push(limit);
+  queryString += `
+  ORDER BY cost_per_night
+  LIMIT $${queryParams.length};
+  `;
+
+  console.log(queryString, queryParams);
+
   return pool
-    .query(
-      `SELECT * from properties
-      LIMIT $1`,
-      [limit],
-    )
+    .query(queryString, queryParams)
     .then(res => {
       return res.rows;
     })
