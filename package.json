@@ -1,5 +1,16 @@
 {
-  "dependencies": {
-    "pg": "^8.7.3"
-  }
+  "name": "lightbnb",
+  "version": "1.0.0",
+  "description": "LightBnB is a lightweight AirBnB clone. Designed to aid learning in database connections and queries, basic SQL Injection attack defenses as well as dynamic search queries to a database.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JCPenne/lightbnb.git"
+  },
+  "keywords": [],
+  "author": "Jack Palmer <jackpalmer@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JCPenne/lightbnb/issues"
+  },
+  "homepage": "https://github.com/JCPenne/lightbnb#readme"
 }
