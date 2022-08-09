@@ -66,7 +66,6 @@ const addUser = function (user) {
       [user.name, user.email, user.password],
     )
     .then(res => {
-      console.log(res.rows[0]);
       return res.rows[0];
     })
     .catch(err => {
@@ -95,7 +94,6 @@ const getAllReservations = function (guest_id, limit = 10) {
       [guest_id, limit],
     )
     .then(res => {
-      console.log(res.rows);
       return res.rows;
     })
     .catch(err => {
@@ -164,8 +162,6 @@ const getAllProperties = (options, limit = 10) => {
   ORDER BY cost_per_night
   LIMIT $${queryParams.length};
   `;
-
-  console.log(queryString, queryParams);
 
   return pool
     .query(queryString, queryParams)
