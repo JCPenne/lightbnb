@@ -128,8 +128,8 @@ const getAllProperties = (options, limit = 10) => {
     queryParams.length === 0
       ? (queryString += queryStringWhereClauses[0])
       : (queryString += queryStringWhereClauses[1]);
-    queryParams.push(`%${options.owner_id}%`);
-    queryString += ` owner_id = $${queryParams.indexOf(`%${options.owner_id}%`) + 1}`;
+    queryParams.push(`${options.owner_id}`);
+    queryString += ` owner_id = $${queryParams.indexOf(`${options.owner_id}`) + 1}`;
   }
 
   if (options.minimum_price_per_night) {
