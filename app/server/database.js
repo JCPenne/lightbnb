@@ -207,7 +207,8 @@ const addProperty = function (property) {
       ],
     )
     .then(res => {
-      return res.rows;
+      console.log(`new listing created`);
+      return res.rows[0];
     })
     .catch(err => {
       console.log(err.message);

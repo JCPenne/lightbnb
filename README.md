@@ -36,8 +36,15 @@ LightBnB is a lightweight AirBnB clone. Designed to aid learning in database con
 - In your preferred browser, navigate to `localhost:3000`
 - You can now create an account, login, view or search for properties or create your own listing.
 
-
-
 ## ERD Screenshot
 
 ![ERD](/screenshots/Lightbnb-ERD.png 'LightBnB ERD')
+
+## Dependencies
+
+- bcrypt
+- body-parser
+- cookie-session
+- express
+- nodemon
+- pg
